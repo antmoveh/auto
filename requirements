@@ -1,0 +1,4 @@
+django==1.11
+pycrypto==2.1+
+ecdsa==0.3.9+
+pymysql==0.7.11

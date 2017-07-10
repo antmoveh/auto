@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试完成</title>
+</head>
+<body>
+<div align="center">
+    <h2>测试完成: {{ prod }} {{ version }} 于 {{ server }}</h2>
+    <table width="1000">
+        <tr>
+            <td width="30%">部署项目: {{ prod }} {{ version }}</td>
+            <td width="20%">部署环境: {{ server }}</td>
+            <td width="30%" align="center">部署时间：{{ dep_time }}</td>
+            <td width="20%" align="center">部署用户：{{ user }}</td>
+        </tr>
+        <tr>
+            <td colspan="4" align="center">
+                <table width="100%">
+                    <caption><h3>详细信息</h3></caption>
+                    <thead>
+                    <tr>
+                        <th width="20%" align="center">自动测试工程</th>
+                        <th width="25%" align="center">启动时间</th>
+                        <th width="25%" align="center">结束时间</th>
+                        <th width="15%" align="center">状态</th>
+                        <th width="15%" align="center">详细信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for test in tests %}
+                        <tr>
+                            <td style="border-right: 1px solid #000000;">
+                                {% autoescape off %}{{ test.name }}{% endautoescape %}</td>
+                            <td align="center" style="border-right: 1px solid #000000;">
+                                {% autoescape off %}{{ test.start_time }}{% endautoescape %}</td>
+                            <td align="center" style="border-right: 1px solid #000000;">
+                                {% autoescape off %}{{ test.end_time }}{% endautoescape %}</td>
+                            <td align="center" style="border-right: 1px solid #000000;">
+                                {% autoescape off %}{{ test.status }}{% endautoescape %}</td>
+                            <td align="center"><a href="{% autoescape off %}{{ test.url }}{% endautoescape %}"
+                                                  target="_blank">测试详情</a></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" align="center">无自动测试工程</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

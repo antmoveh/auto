@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>部署{{ status }}</title>
+</head>
+<body>
+<div align="center">
+    <h2>服务器 {{ server }} 部署 {{ status }}</h2>
+    <table width="1000">
+        <tr>
+            <td width="10%">服务器：</td>
+            <td width="20%">{{ server }}</td>
+            <td width="10%">产品：</td>
+            <td width="20%">{{ prod }}</td>
+            <td width="10%">版本：</td>
+            <td width="30%">{{ version }}</td>
+        </tr>
+        <tr>
+            <td width="10%">用户：</td>
+            <td width="20%">{{ user }}</td>
+            <td width="10%">状态：</td>
+            <td width="20%">部署{{ status }}</td>
+            <td width="10%">时间：</td>
+            <td width="30%">{{ time }}</td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <table width="100%">
+                    <caption><h3>部署日志</h3></caption>
+                    <thead>
+                    <tr>
+                        <th width="25%" align="center">时间</th>
+                        <th width="15%" align="center">状态</th>
+                        <th width="60%" align="center">记录</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for log in logs %}
+                        <tr>
+                            <td align="center" style="border-right: 1px solid #000000;">{{ log.time }}</td>
+                            <td align="center" style="border-right: 1px solid #000000;">{{ log.status }}</td>
+                            <td>{{ log.detail }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

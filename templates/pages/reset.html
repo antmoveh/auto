@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BSP - {{ title }}</title>
+    <script src="/static/jquery/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/jquery/jquery-ui.min.js"></script>
+    <script src="/static/jquery/jquery.md5.js"></script>
+    <script src="/static/bootstrap-dialog/bootstrap-dialog.js"></script>
+    <script src="/static/pages/js/login.js"></script>
+    <script src="/static/pages/js/reset.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-dialog/bootstrap-dialog.css"/>
+</head>
+<body class="col-lg-6 col-lg-offset-3">
+<div class="text-center">
+    <table class="table table-striped">
+        <caption class="text-center">{{ uname }}，请设置新密码密码</caption>
+        <tbody>
+        <tr>
+            <td width="20%">密码</td>
+            <td width="80%"><input class="col-lg-12" type="password" name="new_pass"></td>
+        </tr>
+        <tr>
+            <td>确认</td>
+            <td><input class="col-lg-12" type="password" name="confirm"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="2" class="text-center">
+                <button class="btn btn-primary" onclick="reset_password();">提交</button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="alert alert-info" hidden id="loading">工作中……</div>
+</body>
+</html>

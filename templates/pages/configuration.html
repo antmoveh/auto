@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BSP - {{ title }}</title>
+    <script src="/static/jquery/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/jquery/jquery-ui.min.js"></script>
+    <script src="/static/jquery/jquery.md5.js"></script>
+    <script src="/static/bootstrap-dialog/bootstrap-dialog.js"></script>
+    <script src="/static/pages/js/login.js"></script>
+    <script src="/static/pages/js/configuration.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/jquery/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-dialog/bootstrap-dialog.css"/>
+</head>
+<body class="col-lg-10 col-lg-offset-1">
+<table class="col-lg-12">
+    <tbody>
+    <tr>
+        <td width="20%"></td>
+        <td width="60%" class="text-center"><h1>自动化平台</h1></td>
+        <td width="20%" style="text-align: right;" id="login">{% autoescape off %}{{ login }}{% endautoescape %}</td>
+    </tr>
+    </tbody>
+</table>
+<ul class="nav nav-tabs">
+    {% for tab in tabs %}{% autoescape off %}
+        {{ tab }}
+    {% endautoescape %}{% endfor %}
+</ul>
+<div class="col-lg-12" id="main">
+    <table class="table" id="file_name" style="margin-bottom: 0;">
+        <tbody>
+        <tr>
+            <td width="2%" style="text-align: left;">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" onclick="read_config();">读取配置</button>
+                </div>
+            </td>
+            <td width="42%" class="text-center vert-middle" name="filename">
+                <div class="btn-group">
+                    <div class="dropdown" id="prod"></div>
+                </div>
+                <div class="btn-group">
+                    <div class="dropdown" id="module"></div>
+                </div>
+                <div class="btn-group">
+                    <div class="dropdown" id="config"></div>
+                </div>
+            </td>
+            <td width="12%">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" id="relation" onclick="relation();">关联</button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" id="disrealtion" onclick="disrelation();">取关</button>
+                </div>
+            </td>
+            <td width="42%" class="text-center vert-middle" name="filename">
+                <div class="btn-group">
+                    <div class="dropdown" id="servers"></div>
+                </div>
+                <div class="btn-group">
+                    <div class="dropdown" id="host"></div>
+                </div>
+                <div class="btn-group">
+                    <div class="dropdown" id="path"></div>
+                </div>
+            </td>
+            <td width="2%" style="text-align: right;">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" id="submit_test" onclick="submit_test();">提交</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="configdetail" style="display: block; overflow: auto" align="center" class="col-lg-12"><textarea
+            name="config" rows="29" cols="174" disabled></textarea></div>
+</div>
+<div class="modal fade" id="ConfigModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" name="config_main">
+            <div class="modal-header" align="center" name="config_header"><h3>添加新配置文件</h3></div>
+            <div class="modal-body" name="config_body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <td>文件路径：</td>
+                    <td><input class="form-control" type="text" name="path" value="WEB-INF/classes/"></td>
+                    </tr>
+                    <tr>
+                        <td>打入包内：</td>
+                        <td>
+                            <div class="dropdown" name="in_p">
+                                <button type="button" class="btn btn-default dropdown-toggle" name="in_p"
+                                        data-toggle="dropdown" pid="Y">是<span class="caret">
+							</span></button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a href="#" pid="Y">是</a></li>
+                                    <li><a href="#" pid="N">否</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" name="config_footer">
+                <div class="row" align="center">
+                    <button type="button" class="btn btn-primary" onclick="create_relation();">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert alert-info" hidden id="builds-loading">数据载入中……</div>
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" name="login_main">
+            <div class="modal-header" align="center" name="login_header"><h3>用户登录</h3></div>
+            <div class="modal-body" name="login_body">
+                <table class="table table-bordered" style="margin-bottom: 0;">
+                    <tbody>
+                    <tr>
+                        <td width="50%" style="vertical-align: top;">
+                            <table class="table col-lg-12">
+                                <thead>
+                                <tr>
+                                    <th class="text-center" colspan="2"><h4>登录</h4></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>用户名:</td>
+                                    <td><input type="text" name="username" class="col-lg-12"></td>
+                                </tr>
+                                <tr>
+                                    <td>密　码:</td>
+                                    <td><input type="password" name="password" class="col-lg-12"></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        <button class="btn btn-primary" onclick="login();">登录</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right"><a href="#" onclick="show_recover();">重置密码</a>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                        <td width="50%" style="vertical-align: top;">
+                            <table class="table col-lg-12">
+                                <thead>
+                                <tr>
+                                    <th class="text-center" colspan="2"><h4>注册</h4></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>用户名:</td>
+                                    <td><input type="text" name="new_username" class="col-lg-12"></td>
+                                </tr>
+                                <tr>
+                                    <td>密　码:</td>
+                                    <td><input type="password" name="new_password" class="col-lg-12"></td>
+                                </tr>
+                                <tr>
+                                    <td>确认密码:</td>
+                                    <td><input type="password" name="new_confirm" class="col-lg-12"></td>
+                                </tr>
+                                <tr>
+                                    <td>邮件地址:</td>
+                                    <td><input type="text" name="new_email" class="col-lg-12"></td>
+                                </tr>
+                                <tr>
+                                    <td>显示名称:</td>
+                                    <td><input type="text" name="new_display" class="col-lg-12"></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        <button class="btn btn-primary" onclick="new_login();">提交</button>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" name="login_footer">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="RecoverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" name="recover_main">
+            <div class="modal-header" align="center" name="recover_header"><h3>重置密码</h3></div>
+            <div class="modal-body" name="recover_body">
+                <table class="table table-striped table-bordered col-lg-12">
+                    <caption class="text-center">请提供用户名</caption>
+                    <tbody>
+                    <tr>
+                        <td width="15%">用户名:</td>
+                        <td width="35%"><input type="text" name="username" class="col-lg-12"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <button class="btn btn-primary" onclick="recover();">申请重置</button>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer" name="recover_footer">&nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert alert-info" hidden id="loading">工作中……</div>
+</body>
+</html>
